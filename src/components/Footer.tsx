@@ -39,7 +39,10 @@ export const Footer = () => {
           </nav>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-cream/10 text-center">
+        <div className="mt-8 pt-8 border-t border-cream/10 text-center space-y-3">
+          <p className="text-xs text-cream/40 max-w-2xl mx-auto leading-relaxed">
+            התמונות באתר להמחשה בלבד. מאחר ומדובר במוצרים טבעיים, ייתכנו שינויים קלים בגוון, בצורה או במרקם.
+          </p>
           <p className="text-sm text-cream/50">
             © {new Date().getFullYear()} NUMI - שלווה בקופסא. כל הזכויות שמורות.
           </p>

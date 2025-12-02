@@ -5,6 +5,7 @@ import { FeaturedBox } from "@/components/FeaturedBox";
 import { Products } from "@/components/Products";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { StickyWhatsApp } from "@/components/StickyWhatsApp";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
         <Contact />
       </main>
       <Footer />
+      <StickyWhatsApp />
     </div>
   );
 };

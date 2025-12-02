@@ -39,9 +39,9 @@ export const Hero = () => {
               className="w-16 h-px bg-terracotta"
             />
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-warm-brown leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-warm-brown leading-tight">
               שלווה בקופסא
-              <span className="block text-2xl md:text-3xl lg:text-4xl mt-2 text-warm-brown-light font-light">
+              <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 text-warm-brown-light font-light">
                 רגעים של שקט, עטופים באהבה
               </span>
             </h1>

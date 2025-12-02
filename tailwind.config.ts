@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Heebo', 'sans-serif'],
+        sans: ['Assistant', 'sans-serif'],
         serif: ['Cormorant Garamond', 'serif'],
       },
       colors: {
