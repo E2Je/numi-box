@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import logoImg from "@/assets/numi-logo.jpg";
 
 const navLinks = [
-  { href: "#story", label: "הסיפור" },
+  { href: "#story", label: "נעים להכיר" },
   { href: "#box", label: "המארז" },
   { href: "#products", label: "המוצרים" },
   { href: "#contact", label: "צור קשר" },
