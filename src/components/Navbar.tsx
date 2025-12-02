@@ -49,7 +49,7 @@ export const Navbar = () => {
             <img 
               src={logoImg} 
               alt="NUMI - שלווה בקופסא" 
-              className="h-14 w-auto object-contain rounded-lg"
+              className="h-20 w-auto object-contain rounded-lg"
             />
           </a>
 

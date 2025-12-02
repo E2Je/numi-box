@@ -176,3 +176,19 @@
     text-wrap: balance;
   }
 }
+
+/* Accessibility Styles */
+.high-contrast {
+  filter: contrast(1.4);
+}
+
+.large-cursor,
+.large-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M5.5 3.21V20.8l5.4-5.37 3.44 7.37L18.5 21l-3.5-7.5H21L5.5 3.21z'/%3E%3C/svg%3E"), auto !important;
+}
+
+.highlight-links a {
+  background-color: hsl(48 100% 50% / 0.3) !important;
+  text-decoration: underline !important;
+  outline: 2px solid hsl(48 100% 40%) !important;
+}

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Instagram } from "lucide-react";
 import logoImg from "@/assets/numi-logo.jpg";
 
 export const Footer = () => {
@@ -7,13 +8,24 @@ export const Footer = () => {
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo */}
-          <div className="flex flex-col items-center md:items-start gap-2">
+          <div className="flex flex-col items-center md:items-start gap-3">
             <img 
               src={logoImg} 
               alt="NUMI - שלווה בקופסא" 
-              className="h-16 w-auto object-contain rounded-lg brightness-110"
+              className="h-20 w-auto object-contain rounded-lg brightness-110"
             />
             <p className="text-sm text-cream/60">רגעים של שקט, עטופים באהבה</p>
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/numi_box"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-cream/70 hover:text-cream transition-colors text-sm"
+              aria-label="עקבו אחרינו באינסטגרם"
+            >
+              <Instagram className="w-5 h-5" />
+              <span>@numi_box</span>
+            </a>
           </div>
 
           {/* Links */}
