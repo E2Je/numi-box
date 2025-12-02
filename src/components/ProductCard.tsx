@@ -12,7 +12,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ name, price, description, image, delay = 0 }: ProductCardProps) => {
   const whatsappMessage = encodeURIComponent(`היי בתשבע, אשמח להזמין את ${name}`);
-  const whatsappLink = `https://wa.me/972556692412?text=${whatsappMessage}`;
+  const whatsappLink = `https://wa.me/972507803791?text=${whatsappMessage}`;
 
   return (
     <motion.article
@@ -28,7 +28,7 @@ export const ProductCard = ({ name, price, description, image, delay = 0 }: Prod
           <img
             src={image}
             alt={name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
           />
           {/* Price Badge */}
           <div className="absolute top-4 left-4 bg-card/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-soft">

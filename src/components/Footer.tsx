@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logoImg from "@/assets/logo.jpg";
+import logoImg from "@/assets/numi-logo.jpg";
 
 export const Footer = () => {
   return (
@@ -31,10 +31,10 @@ export const Footer = () => {
               הצהרת נגישות
             </Link>
             <a 
-              href="tel:0556692412" 
+              href="tel:0507803791" 
               className="text-cream/70 hover:text-cream transition-colors"
             >
-              055-669-2412
+              050-780-3791
             </a>
           </nav>
         </div>

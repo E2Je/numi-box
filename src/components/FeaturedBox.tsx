@@ -17,7 +17,7 @@ export const FeaturedBox = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const whatsappLink = "https://wa.me/972556692412?text=היי בתשבע, אשמח להזמין את מארז נומי";
+  const whatsappLink = "https://wa.me/972507803791?text=היי בתשבע, אשמח להזמין את מארז נומי";
 
   return (
     <section id="box" className="section-padding bg-cream">
