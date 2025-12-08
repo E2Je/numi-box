@@ -6,7 +6,6 @@ import { Products } from "@/components/Products";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { StickyWhatsApp } from "@/components/StickyWhatsApp";
-import { AccessibilityToolbar } from "@/components/AccessibilityToolbar";
 
 const Index = () => {
   return (
@@ -21,7 +20,6 @@ const Index = () => {
       </main>
       <Footer />
       <StickyWhatsApp />
-      <AccessibilityToolbar />
     </div>
   );
 };
