@@ -56,17 +56,15 @@ const Accessibility = () => {
               <section>
                 <h2 className="text-xl font-serif text-warm-brown mb-3">יצירת קשר בנושא נגישות</h2>
                 <p>
-                  אם נתקלתם בבעיה בנושא נגישות, נשמח שתפנו אלינו לתיקון:
+                  בכל בקשה או בעיה בנושא נגישות ניתן לפנות לרכזת הנגישות, בת-שבע, בטלפון{" "}
+                  <a href="tel:0507803791" className="text-terracotta hover:underline" dir="ltr">
+                    050-7803791
+                  </a>{" "}
+                  או במייל{" "}
+                  <a href="mailto:batsh.pam@gmail.com" className="text-terracotta hover:underline">
+                    batsh.pam@gmail.com
+                  </a>
                 </p>
-                <div className="bg-lavender-soft/50 rounded-xl p-6 mt-4">
-                  <p className="font-medium text-warm-brown">בת-שבע פם גרינברג</p>
-                  <p>
-                    טלפון:{" "}
-                    <a href="tel:0556692412" className="text-terracotta hover:underline" dir="ltr">
-                      055-669-2412
-                    </a>
-                  </p>
-                </div>
               </section>
             </div>
 
