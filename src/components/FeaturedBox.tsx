@@ -29,8 +29,9 @@ export const FeaturedBox = () => {
             <div className="relative overflow-hidden rounded-3xl shadow-elegant">
               <img src={fullBoxImg} alt="מארז נומי שלווה בקופסא - המארז השלם" className="w-full object-cover aspect-[4/3]" />
               {/* Price Badge */}
-              <div className="absolute top-6 left-6 bg-card/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-soft">
-                <span className="text-3xl text-terracotta font-mono text-left">249₪</span>
+              <div className="absolute top-6 left-6 bg-card/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-soft flex items-center gap-3">
+                <span className="text-2xl text-muted-foreground font-mono line-through">249₪</span>
+                <span className="text-3xl text-terracotta font-mono">199 ש"ח</span>
               </div>
             </div>
           </motion.div>
