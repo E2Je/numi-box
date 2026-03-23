@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { MessageCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import fullBoxImg from "@/assets/full-box.jpeg";
+import { whatsappLink } from "@/lib/constants";
 const boxFeatures = ["כרית עיניים עם פשתן ופרחי לבנדר", "רול שמנים Dream להרגעה", "ספריי Good Mood לאווירה", "חליטת נומי - לואיזה ומליסה", "נר צף עם ניחוח לבנדר"];
 export const FeaturedBox = () => {
   const ref = useRef(null);
@@ -11,7 +12,7 @@ export const FeaturedBox = () => {
     once: true,
     margin: "-100px"
   });
-  const whatsappLink = "https://wa.me/972507803791?text=היי בתשבע, אשמח להזמין את מארז נומי";
+  const link = whatsappLink("היי בתשבע, אשמח להזמין את מארז נומי");
   return <section id="box" className="section-padding bg-cream">
       <div className="container mx-auto px-4 md:px-8">
         <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -70,7 +71,7 @@ export const FeaturedBox = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="hidden sm:flex flex-shrink-0 flex-col items-center justify-center bg-gradient-to-br from-terracotta to-terracotta/80 text-white rounded-2xl p-4 shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300"
               >
-                <span className="text-xs font-medium opacity-90">🔥 מבצע לזמן מוגבל</span>
+                <span className="text-xs font-medium opacity-90">🌸 מבצע אביב</span>
                 <span className="text-3xl font-bold font-mono">199₪</span>
                 <span className="text-xs opacity-75 line-through">249₪</span>
               </motion.div>
@@ -104,7 +105,7 @@ export const FeaturedBox = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="sm:hidden bg-gradient-to-r from-terracotta to-terracotta/80 text-white rounded-xl p-4 text-center shadow-lg"
             >
-              <span className="text-sm font-medium">🔥 מבצע לזמן מוגבל!</span>
+              <span className="text-sm font-medium">🌸 מבצע אביב!</span>
               <div className="flex items-center justify-center gap-3 mt-1">
                 <span className="text-2xl font-bold font-mono">199₪</span>
                 <span className="text-sm opacity-75 line-through">249₪</span>
@@ -123,7 +124,7 @@ export const FeaturedBox = () => {
             delay: 0.8
           }} className="pt-4">
               <Button variant="whatsapp" size="lg" asChild className="w-full sm:w-auto">
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" aria-label="הזמנת המארז בוואטסאפ">
+                <a href={link} target="_blank" rel="noopener noreferrer" aria-label="הזמנת המארז בוואטסאפ">
                   <MessageCircle className="w-5 h-5" />
                   הזמנת המארז בוואטסאפ
                 </a>

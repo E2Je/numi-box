@@ -6,6 +6,7 @@ import { Products } from "@/components/Products";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 import { StickyWhatsApp } from "@/components/StickyWhatsApp";
+import { SpringBanner } from "@/components/SpringBanner";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
+        <SpringBanner />
         <Story />
         <FeaturedBox />
         <Products />

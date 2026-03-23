@@ -1,13 +1,15 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-yoga.png";
 
 export const Hero = () => {
-  const scrollToContact = () => {
-    const element = document.querySelector("#contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+  const scrollIndicatorRef = useRef(null);
+  const isIndicatorVisible = useInView(scrollIndicatorRef, { once: false });
+
+  const scrollToSection = (id: string) => {
+    const element = document.querySelector(id);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -18,6 +20,7 @@ export const Hero = () => {
           src={heroImage}
           alt="רגע של שלווה עם כרית עיניים נומי"
           className="w-full h-full object-cover object-center"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-l from-cream/95 via-cream/80 to-cream/40" />
       </div>
@@ -31,7 +34,6 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-6"
           >
-            {/* Decorative Element */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -64,7 +66,7 @@ export const Hero = () => {
               <Button
                 variant="hero"
                 size="lg"
-                onClick={scrollToContact}
+                onClick={() => scrollToSection("#contact")}
                 aria-label="לרכישת המארז"
               >
                 לרכישת המארז
@@ -72,10 +74,7 @@ export const Hero = () => {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => {
-                  const element = document.querySelector("#story");
-                  if (element) element.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={() => scrollToSection("#story")}
                 aria-label="קראו עוד על נומי"
               >
                 הסיפור שלנו
@@ -85,21 +84,23 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
+      {/* Scroll Indicator - stops animating when out of view */}
+      <div ref={scrollIndicatorRef} className="absolute bottom-8 left-1/2 -translate-x-1/2">
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-warm-brown/30 rounded-full flex justify-center pt-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.2 }}
         >
-          <div className="w-1.5 h-3 bg-terracotta/60 rounded-full" />
+          <motion.div
+            animate={isIndicatorVisible ? { y: [0, 10, 0] } : { y: 0 }}
+            transition={{ duration: 2, repeat: isIndicatorVisible ? Infinity : 0 }}
+            className="w-6 h-10 border-2 border-warm-brown/30 rounded-full flex justify-center pt-2"
+            aria-hidden="true"
+          >
+            <div className="w-1.5 h-3 bg-terracotta/60 rounded-full" />
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };

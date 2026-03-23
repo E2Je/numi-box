@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { EMAIL } from "@/lib/constants";
 const Privacy = () => {
   return <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -46,15 +47,15 @@ const Privacy = () => {
               
               <p>
                 לכל בקשה לעיון במידע, תיקון או הסרה מהמאגר, ניתן לפנות למייל:{" "}
-                <a href="mailto:batsh.pam@gmail.com" className="text-terracotta hover:underline">
-                  batsh.pam@gmail.com
+                <a href={`mailto:${EMAIL}`} className="text-terracotta hover:underline">
+                  {EMAIL}
                 </a>
               </p>
             </div>
 
             <div className="mt-12 pt-8 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                עדכון אחרון: דצמבר 2025
+                עדכון אחרון: {new Date().toLocaleDateString("he-IL", { month: "long", year: "numeric" })}
               </p>
             </div>
           </motion.article>

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import flowers1 from "@/assets/flowers-1.png";
+import { PHONE_DISPLAY, whatsappLink } from "@/lib/constants";
 export const Contact = () => {
   return <section id="contact" className="section-padding bg-cream relative overflow-hidden">
       {/* Decorative Flowers */}
@@ -48,19 +49,19 @@ export const Contact = () => {
             <h3 className="text-xl font-serif text-warm-brown text-center">דרכים ליצירת קשר</h3>
             
             {/* Phone */}
-            <a href="tel:0507803791" className="flex items-center justify-center gap-4 group" aria-label="התקשרו אלינו">
+            <a href={`tel:${PHONE_DISPLAY.replace(/-/g, "")}`} className="flex items-center justify-center gap-4 group" aria-label="התקשרו אלינו">
               <span className="w-12 h-12 rounded-full bg-lavender/30 flex items-center justify-center group-hover:bg-lavender/50 transition-colors">
                 <Phone className="w-5 h-5 text-terracotta" />
               </span>
               <div>
                 <p className="text-sm text-muted-foreground">טלפון</p>
-                <p className="text-warm-brown font-medium" dir="ltr">050-780-3791</p>
+                <p className="text-warm-brown font-medium" dir="ltr">{PHONE_DISPLAY}</p>
               </div>
             </a>
 
             {/* WhatsApp Button */}
             <Button variant="whatsapp" size="lg" asChild className="w-full">
-              <a href="https://wa.me/972507803791?text=היי בתשבע, אשמח לשמוע עוד על נומי" target="_blank" rel="noopener noreferrer" aria-label="שלחו הודעה בוואטסאפ">
+              <a href={whatsappLink("היי בתשבע, אשמח לשמוע עוד על נומי")} target="_blank" rel="noopener noreferrer" aria-label="שלחו הודעה בוואטסאפ">
                 <MessageCircle className="w-5 h-5" />
                 שלחו הודעה בוואטסאפ
               </a>

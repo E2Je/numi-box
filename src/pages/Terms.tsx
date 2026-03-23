@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { EMAIL, PHONE_DISPLAY } from "@/lib/constants";
 const Terms = () => {
   return <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -64,12 +65,12 @@ const Terms = () => {
                 </p>
                 <p>
                   הודעת ביטול יש לשלוח במייל:{" "}
-                  <a href="mailto:batsh.pam@gmail.com" className="text-terracotta hover:underline">
-                    batsh.pam@gmail.com
+                  <a href={`mailto:${EMAIL}`} className="text-terracotta hover:underline">
+                    {EMAIL}
                   </a>{" "}
                   או בוואטסאפ:{" "}
-                  <a href="tel:0507803791" className="text-terracotta hover:underline" dir="ltr">
-                    050-7803791
+                  <a href={`tel:${PHONE_DISPLAY.replace(/-/g, "")}`} className="text-terracotta hover:underline" dir="ltr">
+                    {PHONE_DISPLAY}
                   </a>.
                 </p>
                 <p>
@@ -90,7 +91,7 @@ const Terms = () => {
 
             <div className="mt-12 pt-8 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                עדכון אחרון: דצמבר 2025
+                עדכון אחרון: {new Date().toLocaleDateString("he-IL", { month: "long", year: "numeric" })}
               </p>
             </div>
           </motion.article>

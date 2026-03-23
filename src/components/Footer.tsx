@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Mail, Phone, MapPin } from "lucide-react";
 import logoImg from "@/assets/numi-logo.jpg";
+import { PHONE_DISPLAY, EMAIL } from "@/lib/constants";
 
 export const Footer = () => {
   return (
@@ -31,19 +32,19 @@ export const Footer = () => {
           <div className="flex flex-col items-center md:items-start gap-3">
             <h3 className="text-lg font-serif text-cream mb-2">פרטי התקשרות</h3>
             <p className="text-sm text-cream/80">בת-שבע פם גרינברג</p>
-            <a 
-              href="tel:0507803791" 
+            <a
+              href={`tel:${PHONE_DISPLAY.replace(/-/g, "")}`}
               className="flex items-center gap-2 text-cream/70 hover:text-cream transition-colors text-sm"
             >
               <Phone className="w-4 h-4" />
-              <span dir="ltr">050-7803791</span>
+              <span dir="ltr">{PHONE_DISPLAY}</span>
             </a>
-            <a 
-              href="mailto:batsh.pam@gmail.com" 
+            <a
+              href={`mailto:${EMAIL}`}
               className="flex items-center gap-2 text-cream/70 hover:text-cream transition-colors text-sm"
             >
               <Mail className="w-4 h-4" />
-              <span>batsh.pam@gmail.com</span>
+              <span>{EMAIL}</span>
             </a>
             <div className="flex items-center gap-2 text-cream/70 text-sm">
               <MapPin className="w-4 h-4" />

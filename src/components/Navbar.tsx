@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,20 +14,28 @@ const navLinks = [
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
+
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    if (element) element.scrollIntoView({ behavior: "smooth" });
     setIsMobileMenuOpen(false);
   };
 
@@ -37,18 +45,16 @@ export const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-card/95 backdrop-blur-md shadow-soft"
-          : "bg-transparent"
+        isScrolled ? "bg-card/95 backdrop-blur-md shadow-soft" : "bg-transparent"
       }`}
     >
       <nav className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2">
-            <img 
-              src={logoImg} 
-              alt="NUMI - שלווה בקופסא" 
+            <img
+              src={logoImg}
+              alt="NUMI - שלווה בקופסא"
               className="h-20 w-auto object-contain rounded-lg"
             />
           </a>
@@ -80,9 +86,11 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
+            ref={hamburgerRef}
             className="md:hidden p-2 text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "סגור תפריט" : "פתח תפריט"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

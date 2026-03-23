@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { EMAIL, PHONE_DISPLAY } from "@/lib/constants";
 
 const Accessibility = () => {
   return (
@@ -57,12 +58,12 @@ const Accessibility = () => {
                 <h2 className="text-xl font-serif text-warm-brown mb-3">יצירת קשר בנושא נגישות</h2>
                 <p>
                   בכל בקשה או בעיה בנושא נגישות ניתן לפנות לרכזת הנגישות, בת-שבע, בטלפון{" "}
-                  <a href="tel:0507803791" className="text-terracotta hover:underline" dir="ltr">
-                    050-7803791
+                  <a href={`tel:${PHONE_DISPLAY.replace(/-/g, "")}`} className="text-terracotta hover:underline" dir="ltr">
+                    {PHONE_DISPLAY}
                   </a>{" "}
                   או במייל{" "}
-                  <a href="mailto:batsh.pam@gmail.com" className="text-terracotta hover:underline">
-                    batsh.pam@gmail.com
+                  <a href={`mailto:${EMAIL}`} className="text-terracotta hover:underline">
+                    {EMAIL}
                   </a>
                 </p>
               </section>
@@ -70,7 +71,7 @@ const Accessibility = () => {
 
             <div className="mt-12 pt-8 border-t border-border">
               <p className="text-sm text-muted-foreground">
-                עדכון אחרון: דצמבר 2024
+                עדכון אחרון: {new Date().toLocaleDateString("he-IL", { month: "long", year: "numeric" })}
               </p>
             </div>
           </motion.article>
