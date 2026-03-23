@@ -29,11 +29,6 @@ export const FeaturedBox = () => {
             <div className="absolute -inset-6 bg-gradient-to-br from-sage/20 via-lavender/20 to-blush/30 rounded-3xl blur-3xl" />
             <div className="relative overflow-hidden rounded-3xl shadow-elegant">
               <img src={fullBoxImg} alt="מארז נומי שלווה בקופסא - המארז השלם" className="w-full object-cover aspect-[4/3]" loading="lazy" />
-              {/* Price Badge */}
-              <div className="absolute top-6 left-6 bg-card/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-soft flex items-center gap-3">
-                <span className="text-2xl text-muted-foreground font-mono line-through">249₪</span>
-                <span className="text-3xl text-terracotta font-mono">199 ש"ח</span>
-              </div>
             </div>
           </motion.div>
 
@@ -71,9 +66,9 @@ export const FeaturedBox = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="hidden sm:flex flex-shrink-0 flex-col items-center justify-center bg-gradient-to-br from-terracotta to-terracotta/80 text-white rounded-2xl p-4 shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300"
               >
-                <span className="text-xs font-medium opacity-90">🌸 מבצע אביב</span>
-                <span className="text-3xl font-bold font-mono">199₪</span>
-                <span className="text-xs opacity-75 line-through">249₪</span>
+                <span className="text-base font-semibold opacity-90">🌸 מבצע אביב</span>
+                <span className="text-4xl font-bold font-mono">199₪</span>
+                <span className="text-sm opacity-75 line-through">249₪</span>
               </motion.div>
 
               <div className="space-y-3 flex-1">
@@ -105,10 +100,10 @@ export const FeaturedBox = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="sm:hidden bg-gradient-to-r from-terracotta to-terracotta/80 text-white rounded-xl p-4 text-center shadow-lg"
             >
-              <span className="text-sm font-medium">🌸 מבצע אביב!</span>
+              <span className="text-lg font-semibold">🌸 מבצע אביב!</span>
               <div className="flex items-center justify-center gap-3 mt-1">
-                <span className="text-2xl font-bold font-mono">199₪</span>
-                <span className="text-sm opacity-75 line-through">249₪</span>
+                <span className="text-4xl font-bold font-mono">199₪</span>
+                <span className="text-base opacity-75 line-through">249₪</span>
               </div>
             </motion.div>
 
