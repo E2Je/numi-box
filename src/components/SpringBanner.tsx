@@ -22,7 +22,7 @@ export const SpringBanner = () => {
         <img
           src={springBannerImg}
           alt="מבצעי אביב נומי"
-          className="w-full object-cover max-h-[520px]"
+          className="w-full object-contain"
           loading="lazy"
         />
 
