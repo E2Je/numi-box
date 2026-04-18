@@ -9,7 +9,6 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  deployments: write
 
 concurrency:
   group: pages
@@ -34,29 +33,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Cancel stale deployments
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const deployments = await github.rest.repos.listDeployments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              environment: 'github-pages',
-              per_page: 20,
-            });
-            for (const d of deployments.data) {
-              if (d.sha !== context.sha) {
-                try {
-                  await github.rest.repos.createDeploymentStatus({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    deployment_id: d.id,
-                    state: 'inactive',
-                  });
-                } catch (e) { /* ignore */ }
-              }
-            }
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
