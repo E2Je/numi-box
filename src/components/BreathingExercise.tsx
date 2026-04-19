@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -119,6 +119,7 @@ export const BreathingExercise = () => {
   const [cycleIndex,       setCycleIndex]       = useState(0);
 
   const intervalRef  = useRef<ReturnType<typeof setInterval> | null>(null);
+  const sectionRef   = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
   const currentPhase = PHASE_SEQUENCE[phaseIndex];
@@ -153,13 +154,16 @@ export const BreathingExercise = () => {
     }
   }, [totalTimeLeft, stage]);
 
-  const startExercise = () => {
+  const startExercise = useCallback(() => {
     setPhaseIndex(0);
     setPhaseTimeLeft(PHASE_DURATION);
     setTotalTimeLeft(selectedDuration);
     setCycleIndex(0);
     setStage("active");
-  };
+    setTimeout(() => {
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  }, [selectedDuration]);
 
   const stopExercise = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -175,8 +179,8 @@ export const BreathingExercise = () => {
   };
 
   return (
-    <section id="breathing" className="section-padding bg-cream/60">
-      <div className="container mx-auto px-4 md:px-8 max-w-2xl text-center">
+    <section id="breathing" ref={sectionRef} className="section-padding bg-cream/60">
+      <div className="w-full max-w-2xl mx-auto px-4 md:px-8 text-center flex flex-col items-center">
         <AnimatePresence mode="wait">
 
           {/* ── IDLE ── */}
@@ -187,7 +191,7 @@ export const BreathingExercise = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.5 }}
-              className="space-y-8"
+              className="w-full space-y-8"
             >
               {/* Header */}
               <div className="space-y-4">
@@ -198,8 +202,10 @@ export const BreathingExercise = () => {
                 >
                   🌿
                 </motion.span>
-                <h2 className="text-3xl md:text-4xl font-serif text-warm-brown">
-                  רגע של שקט לעצמך
+                <h2 className="text-2xl md:text-3xl font-serif text-warm-brown leading-snug">
+                  לפני שנמשיך —<br />
+                  אני מזמינה אותך לקחת רגע של שקט לעצמך<br className="hidden md:block" />
+                  <span className="text-terracotta"> ולנשום עם נומי</span>
                 </h2>
                 <div className="divider-elegant" />
               </div>
@@ -304,31 +310,31 @@ export const BreathingExercise = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="space-y-8"
+              className="flex flex-col items-center gap-8 w-full"
             >
-              {/* Circle */}
-              <div className="relative flex items-center justify-center" style={{ height: 260 }}>
+              {/* Circle — timer + phase label live inside */}
+              <div className="relative flex items-center justify-center" style={{ height: 300 }}>
                 {/* Halo */}
                 {!reduceMotion && (
                   <motion.div
-                    className="absolute rounded-full"
+                    className="absolute rounded-full pointer-events-none"
                     style={{
-                      width: 155, height: 155,
+                      width: 160, height: 160,
                       background: PHASE_COLORS[currentPhase].gradient,
-                      opacity: 0.2,
+                      opacity: 0.18,
                     }}
                     animate={{
-                      scale: CIRCLE_SCALE[currentPhase] * 1.4,
+                      scale: CIRCLE_SCALE[currentPhase] * 1.45,
                       background: PHASE_COLORS[currentPhase].gradient,
                     }}
                     transition={{ duration: TRANSITION_DURATION[currentPhase], ease: "easeInOut" }}
                   />
                 )}
 
-                {/* Main circle — color transitions per phase */}
+                {/* Main circle */}
                 <motion.div
-                  className="relative rounded-full flex items-center justify-center"
-                  style={{ width: 155, height: 155 }}
+                  className="relative rounded-full flex flex-col items-center justify-center gap-0.5"
+                  style={{ width: 160, height: 160 }}
                   animate={{
                     scale:      CIRCLE_SCALE[currentPhase],
                     background: PHASE_COLORS[currentPhase].gradient,
@@ -340,49 +346,61 @@ export const BreathingExercise = () => {
                     boxShadow:  { duration: 0.8 },
                   }}
                 >
+                  {/* Phase label */}
                   <AnimatePresence mode="wait">
                     <motion.span
-                      key={`${currentPhase}-${cycleIndex}`}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.4 }}
-                      className="font-serif text-sm font-medium text-center leading-snug px-4"
-                      style={{ color: "white", textShadow: "0 1px 6px rgba(0,0,0,0.2)" }}
+                      key={`label-${currentPhase}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-xs font-medium tracking-widest uppercase"
+                      style={{ color: "rgba(255,255,255,0.85)", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}
                     >
-                      {cycleText}
+                      {PHASE_SUBTITLE[currentPhase]}
                     </motion.span>
                   </AnimatePresence>
+
+                  {/* Countdown */}
+                  <motion.span
+                    key={phaseTimeLeft}
+                    initial={{ scale: 1.25, opacity: 0.6 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="font-mono font-bold leading-none"
+                    style={{ fontSize: "3rem", color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.25)" }}
+                  >
+                    {phaseTimeLeft}
+                  </motion.span>
+
+                  {/* שניות */}
+                  <span
+                    className="text-xs"
+                    style={{ color: "rgba(255,255,255,0.75)", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}
+                  >
+                    שניות
+                  </span>
                 </motion.div>
               </div>
 
-              {/* Phase label + countdown */}
-              <div className="space-y-1">
+              {/* Rotating phrase — below the circle */}
+              <div className="min-h-[3.5rem] flex items-center justify-center px-4">
                 <AnimatePresence mode="wait">
                   <motion.p
-                    key={currentPhase}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-sm font-medium text-terracotta tracking-widest uppercase"
+                    key={`${currentPhase}-${cycleIndex}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-base text-warm-brown font-medium text-center leading-relaxed"
                   >
-                    {PHASE_SUBTITLE[currentPhase]}
+                    {cycleText}
                   </motion.p>
                 </AnimatePresence>
-                <motion.p
-                  key={phaseTimeLeft}
-                  initial={{ scale: 1.2, opacity: 0.7 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-5xl font-mono text-warm-brown"
-                >
-                  {phaseTimeLeft}
-                </motion.p>
-                <p className="text-sm text-muted-foreground">שניות</p>
               </div>
 
-              <p className="text-muted-foreground text-sm font-mono tracking-wide">
+              {/* Total time remaining */}
+              <p className="text-sm text-muted-foreground font-mono tracking-wide">
                 זמן שנותר: {formatTime(totalTimeLeft)}
               </p>
 
