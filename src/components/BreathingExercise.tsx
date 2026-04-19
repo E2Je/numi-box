@@ -15,7 +15,6 @@ const PHASE_SUBTITLE: Record<Phase, string> = {
   hold2:  "מנוחה",
 };
 
-// Each phase gets a distinct color from the site palette
 const PHASE_COLORS: Record<Phase, { gradient: string; glow: string }> = {
   inhale: {
     gradient: "linear-gradient(135deg, hsl(270 35% 72%), hsl(270 28% 60%))",
@@ -49,13 +48,13 @@ const TRANSITION_DURATION: Record<Phase, number> = {
   hold2:  0.15,
 };
 
-// 10 texts per phase — one shown per full cycle (cycle 0–9, then wraps)
+// 10 texts per phase - one shown per full cycle
 const PHASE_TEXTS: Record<Phase, string[]> = {
   inhale: [
     "שאיפה עמוקה ורכה",
     "תכניסי אוויר לאט פנימה",
     "תני לבית החזה להתרחב",
-    "שאיפה נקייה של חיּוּת",
+    "שאיפה נקייה של חיות",
     "תמלאי את הריאות בנחת",
     "תני לבטן לעלות בעדינות",
     "שאיפה איטית דרך האף",
@@ -110,60 +109,45 @@ const TIMER_OPTIONS = [
 const formatTime = (s: number) =>
   `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
 
+const scrollTo = (id: string) =>
+  document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+
 export const BreathingExercise = () => {
   const [stage,            setStage]            = useState<Stage>("idle");
-  const [phaseIndex,       setPhaseIndex]       = useState(0);
-  const [phaseTimeLeft,    setPhaseTimeLeft]    = useState(PHASE_DURATION);
-  const [totalTimeLeft,    setTotalTimeLeft]    = useState(180);
+  const [tick,             setTick]             = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(180);
-  const [cycleIndex,       setCycleIndex]       = useState(0);
 
   const intervalRef  = useRef<ReturnType<typeof setInterval> | null>(null);
   const sectionRef   = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
-  const currentPhase = PHASE_SEQUENCE[phaseIndex];
-  const cycleText    = PHASE_TEXTS[currentPhase][cycleIndex % 10];
+  // All timing derived from a single tick counter - guaranteed perfect sync
+  const phaseSlot    = Math.floor(tick / PHASE_DURATION);
+  const phaseIndex   = phaseSlot % 4;
+  const cycleIndex   = Math.floor(phaseSlot / 4);
+  const phaseTimeLeft = PHASE_DURATION - (tick % PHASE_DURATION);
+  const totalTimeLeft = Math.max(0, selectedDuration - tick);
+  const currentPhase  = PHASE_SEQUENCE[phaseIndex];
+  const cycleText     = PHASE_TEXTS[currentPhase][cycleIndex % 10];
 
   useEffect(() => {
     if (stage !== "active") return;
-
-    intervalRef.current = setInterval(() => {
-      setTotalTimeLeft(prev => Math.max(0, prev - 1));
-      setPhaseTimeLeft(prev => {
-        const next = prev - 1;
-        if (next <= 0) {
-          setPhaseIndex(i => {
-            const nextPhase = (i + 1) % PHASE_SEQUENCE.length;
-            if (nextPhase === 0) setCycleIndex(c => c + 1);
-            return nextPhase;
-          });
-          return PHASE_DURATION;
-        }
-        return next;
-      });
-    }, 1000);
-
+    intervalRef.current = setInterval(() => setTick(t => t + 1), 1000);
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [stage]);
 
   useEffect(() => {
-    if (stage === "active" && totalTimeLeft === 0) {
+    if (stage === "active" && totalTimeLeft <= 0) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       setStage("done");
     }
   }, [totalTimeLeft, stage]);
 
   const startExercise = useCallback(() => {
-    setPhaseIndex(0);
-    setPhaseTimeLeft(PHASE_DURATION);
-    setTotalTimeLeft(selectedDuration);
-    setCycleIndex(0);
+    setTick(0);
     setStage("active");
-    setTimeout(() => {
-      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 50);
-  }, [selectedDuration]);
+    setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  }, []);
 
   const stopExercise = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -172,9 +156,7 @@ export const BreathingExercise = () => {
 
   const resetExercise = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
-    setPhaseIndex(0);
-    setPhaseTimeLeft(PHASE_DURATION);
-    setCycleIndex(0);
+    setTick(0);
     setStage("idle");
   };
 
@@ -193,7 +175,6 @@ export const BreathingExercise = () => {
               transition={{ duration: 0.5 }}
               className="w-full space-y-8"
             >
-              {/* Header */}
               <div className="space-y-4">
                 <motion.span
                   className="text-4xl block"
@@ -203,14 +184,13 @@ export const BreathingExercise = () => {
                   🌿
                 </motion.span>
                 <h2 className="text-2xl md:text-3xl font-serif text-warm-brown leading-snug">
-                  לפני שנמשיך —<br />
-                  אני מזמינה אותך לקחת רגע של שקט לעצמך<br className="hidden md:block" />
+                  לפני שנמשיך -<br />
+                  אני מזמינה אותך לקחת רגע של שקט לעצמך
                   <span className="text-terracotta"> ולנשום עם נומי</span>
                 </h2>
                 <div className="divider-elegant" />
               </div>
 
-              {/* What is box breathing */}
               <div className="space-y-4 text-right">
                 <p className="text-muted-foreground leading-relaxed">
                   נשימת קופסה היא הזמנה לעצור את רעשי הרקע ולהתחבר לקצב הפנימי שלך.
@@ -226,13 +206,12 @@ export const BreathingExercise = () => {
                   ].map(([title, desc]) => (
                     <li key={title} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <span className="text-terracotta mt-0.5 flex-shrink-0">✦</span>
-                      <span><strong className="text-warm-brown">{title}</strong> — {desc}</span>
+                      <span><strong className="text-warm-brown">{title}</strong> - {desc}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Preparation */}
               <div className="bg-card/60 rounded-2xl p-5 space-y-3 border border-border/40 text-right">
                 <p className="text-warm-brown font-medium">הכנה לתרגול</p>
                 <p className="text-sm text-muted-foreground">כדי להפיק את המקסימום מהרגע הזה:</p>
@@ -241,7 +220,7 @@ export const BreathingExercise = () => {
                     "מרחי מעט משמן הרול Dream על פרקי הידיים ונשמי את הניחוח.",
                     "רססי מתרסיס ה Good Mood בחלל החדר.",
                     "הניחי את הטלפון במקום יציב מולך, בגובה העיניים.",
-                    "שבי בתנוחה נינוחה והתרכזי בעיגול שעל המסך — הוא יוביל אותך.",
+                    "שבי בתנוחה נינוחה והתרכזי בעיגול שעל המסך - הוא יוביל אותך.",
                     "טיפ של NUMI: אם יש לך כרית עיניים, מומלץ לבצע 5 סבבים מול המסך ולאחר מכן להניח את הכרית על העיניים ולהמשיך בנשימות עם העיגול הפנימי שלך.",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -252,16 +231,15 @@ export const BreathingExercise = () => {
                 </ol>
               </div>
 
-              {/* How to */}
               <div className="space-y-3 text-right">
                 <p className="text-warm-brown font-medium">איך מבצעים?</p>
-                <p className="text-sm text-muted-foreground">ארבעה שלבים שווים — 4 שניות לכל שלב:</p>
+                <p className="text-sm text-muted-foreground">ארבעה שלבים שווים - 4 שניות לכל שלב:</p>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: "שאיפה",  desc: "הכניסי אוויר לאט ובנחת",           bg: "bg-lavender/20"    },
-                    { label: "שהייה",  desc: "החזיקי (ריאות מלאות)",              bg: "bg-terracotta/15"  },
-                    { label: "נשיפה",  desc: "שחררי את האוויר והמתח",             bg: "bg-sage/20"        },
-                    { label: "מנוחה",  desc: "שהייה רגועה לפני הסבב הבא",        bg: "bg-blush/40"       },
+                    { label: "שאיפה", desc: "הכניסי אוויר לאט ובנחת",        bg: "bg-lavender/20"   },
+                    { label: "שהייה", desc: "החזיקי (ריאות מלאות)",           bg: "bg-terracotta/15" },
+                    { label: "נשיפה", desc: "שחררי את האוויר והמתח",          bg: "bg-sage/20"       },
+                    { label: "מנוחה", desc: "שהייה רגועה לפני הסבב הבא",     bg: "bg-blush/40"      },
                   ].map(({ label, desc, bg }) => (
                     <div key={label} className={`${bg} rounded-xl p-3 text-right`}>
                       <p className="text-warm-brown font-medium text-sm">{label}</p>
@@ -271,7 +249,6 @@ export const BreathingExercise = () => {
                 </div>
               </div>
 
-              {/* Timer selector */}
               <div className="space-y-3">
                 <p className="text-warm-brown font-medium text-sm">בחרי משך תרגול:</p>
                 <div className="flex justify-center gap-3 flex-wrap">
@@ -312,17 +289,13 @@ export const BreathingExercise = () => {
               transition={{ duration: 0.4 }}
               className="flex flex-col items-center gap-8 w-full"
             >
-              {/* Circle — timer + phase label live inside */}
+              {/* Circle with timer + phase label inside */}
               <div className="relative flex items-center justify-center" style={{ height: 300 }}>
                 {/* Halo */}
                 {!reduceMotion && (
                   <motion.div
                     className="absolute rounded-full pointer-events-none"
-                    style={{
-                      width: 160, height: 160,
-                      background: PHASE_COLORS[currentPhase].gradient,
-                      opacity: 0.18,
-                    }}
+                    style={{ width: 160, height: 160, opacity: 0.18 }}
                     animate={{
                       scale: CIRCLE_SCALE[currentPhase] * 1.45,
                       background: PHASE_COLORS[currentPhase].gradient,
@@ -331,10 +304,11 @@ export const BreathingExercise = () => {
                   />
                 )}
 
-                {/* Main circle */}
+                {/* Main circle - starts contracted (inhale position) */}
                 <motion.div
                   className="relative rounded-full flex flex-col items-center justify-center gap-0.5"
                   style={{ width: 160, height: 160 }}
+                  initial={{ scale: 0.85 }}
                   animate={{
                     scale:      CIRCLE_SCALE[currentPhase],
                     background: PHASE_COLORS[currentPhase].gradient,
@@ -349,11 +323,11 @@ export const BreathingExercise = () => {
                   {/* Phase label */}
                   <AnimatePresence mode="wait">
                     <motion.span
-                      key={`label-${currentPhase}`}
+                      key={`lbl-${currentPhase}`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.25 }}
                       className="text-xs font-medium tracking-widest uppercase"
                       style={{ color: "rgba(255,255,255,0.85)", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}
                     >
@@ -365,7 +339,7 @@ export const BreathingExercise = () => {
                   <motion.span
                     key={phaseTimeLeft}
                     initial={{ scale: 1.25, opacity: 0.6 }}
-                    animate={{ scale: 1, opacity: 1 }}
+                    animate={{ scale: 1,    opacity: 1   }}
                     transition={{ duration: 0.25 }}
                     className="font-mono font-bold leading-none"
                     style={{ fontSize: "3rem", color: "white", textShadow: "0 2px 8px rgba(0,0,0,0.25)" }}
@@ -373,17 +347,16 @@ export const BreathingExercise = () => {
                     {phaseTimeLeft}
                   </motion.span>
 
-                  {/* שניות */}
                   <span
                     className="text-xs"
-                    style={{ color: "rgba(255,255,255,0.75)", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}
+                    style={{ color: "rgba(255,255,255,0.72)", textShadow: "0 1px 4px rgba(0,0,0,0.2)" }}
                   >
                     שניות
                   </span>
                 </motion.div>
               </div>
 
-              {/* Rotating phrase — below the circle */}
+              {/* Phrase below circle - synced to phase change */}
               <div className="min-h-[3.5rem] flex items-center justify-center px-4">
                 <AnimatePresence mode="wait">
                   <motion.p
@@ -391,7 +364,7 @@ export const BreathingExercise = () => {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.35 }}
                     className="text-base text-warm-brown font-medium text-center leading-relaxed"
                   >
                     {cycleText}
@@ -399,7 +372,6 @@ export const BreathingExercise = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Total time remaining */}
               <p className="text-sm text-muted-foreground font-mono tracking-wide">
                 זמן שנותר: {formatTime(totalTimeLeft)}
               </p>
@@ -418,7 +390,7 @@ export const BreathingExercise = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-6"
+              className="flex flex-col items-center space-y-6"
             >
               <motion.span
                 className="text-5xl block"
@@ -437,9 +409,36 @@ export const BreathingExercise = () => {
               <p className="text-terracotta text-sm font-medium">
                 ✦ תמיד אפשר לחזור לפה לתרגל ✦
               </p>
-              <Button variant="hero" onClick={resetExercise}>
-                לתרגל שוב
-              </Button>
+
+              <div className="flex flex-col sm:flex-row gap-3 items-center justify-center pt-2">
+                <Button variant="hero" onClick={resetExercise}>
+                  לתרגל שוב
+                </Button>
+                <button
+                  onClick={() => scrollTo("#products")}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-terracotta/50 text-terracotta hover:bg-terracotta hover:text-white transition-all duration-300 text-sm font-medium"
+                >
+                  <span>🌿</span>
+                  <span>לגלות את מוצרי נומי</span>
+                </button>
+              </div>
+
+              {/* Scroll indicator - same style as Hero */}
+              <motion.button
+                onClick={() => scrollTo("#products")}
+                className="mt-2 flex flex-col items-center gap-2 text-muted-foreground/50 hover:text-terracotta transition-colors duration-300"
+                aria-label="גלילה למוצרים"
+              >
+                <span className="text-xs tracking-widest font-light">המשיכי לגלות</span>
+                <motion.div
+                  className="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2"
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  aria-hidden="true"
+                >
+                  <div className="w-1.5 h-3 bg-current rounded-full" />
+                </motion.div>
+              </motion.button>
             </motion.div>
           )}
 
