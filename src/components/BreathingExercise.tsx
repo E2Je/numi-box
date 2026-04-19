@@ -415,7 +415,7 @@ export const BreathingExercise = () => {
                   לתרגל שוב
                 </Button>
                 <button
-                  onClick={() => scrollTo("#products")}
+                  onClick={() => scrollTo("#box")}
                   className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-terracotta/50 text-terracotta hover:bg-terracotta hover:text-white transition-all duration-300 text-sm font-medium"
                 >
                   <span>🌿</span>
@@ -425,7 +425,7 @@ export const BreathingExercise = () => {
 
               {/* Scroll indicator - same style as Hero */}
               <motion.button
-                onClick={() => scrollTo("#products")}
+                onClick={() => scrollTo("#box")}
                 className="mt-2 flex flex-col items-center gap-2 text-muted-foreground/50 hover:text-terracotta transition-colors duration-300"
                 aria-label="גלילה למוצרים"
               >
