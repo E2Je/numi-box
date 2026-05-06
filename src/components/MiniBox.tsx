@@ -42,7 +42,7 @@ export const MiniBox = () => {
           >
             <div className="space-y-4">
               <span className="inline-block bg-blush/50 text-warm-brown px-4 py-1.5 rounded-full text-sm font-medium">
-                מארז בוטיקי
+                מארז בוטיק
               </span>
               <h2 className="text-3xl md:text-4xl font-serif text-warm-brown">
                 מארז &quot;רגע של שקט&quot;
