@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Story } from "@/components/Story";
 import { FeaturedBox } from "@/components/FeaturedBox";
+import { MiniBox } from "@/components/MiniBox";
 import { BreathingExercise } from "@/components/BreathingExercise";
 import { Products } from "@/components/Products";
 import { Contact } from "@/components/Contact";
@@ -17,6 +18,7 @@ const Index = () => {
         <BreathingExercise />
         <Story />
         <FeaturedBox />
+        <MiniBox />
         <Products />
         <Contact />
       </main>
